@@ -12,40 +12,63 @@
 	<!-- style.css -->
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css" />
 <script>
-function submitToAPI(e) { 
-       e.preventDefault(); 
-       var URL = "https://vanj775dy9.execute-api.eu-west-1.amazonaws.com/prod/juan-email"; 
 
+function submitToAPI(e) {
+       e.preventDefault();
+       var URL = "https://vanj775dy9.execute-api.eu-west-1.amazonaws.com/prod/juan-email";
 
-       var name = document.getElementById("name-input").value; 
-       var email = document.getElementById("email-input").value; 
-       var subject = document.getElementById("subject-input").value; 
-       var message = document.getElementById("message-input").value; 
-       
-       var data = { 
-          name : name, 
-          email : email, 
-          subject : subject, 
-          message: message, 
-        }; 
+            var Namere = /[A-Za-z]{1}[A-Za-z]/;
+            if (!Namere.test($("#name-input").val())) {
+                         alert ("Name can not less than 2 char");
+                return;
+            }
+            var mobilere = /[0-9]{10}/;
+            if (!mobilere.test($("#phone-input").val())) {
+                alert ("Please enter valid mobile number");
+                return;
+            }
+            if ($("#email-input").val()=="") {
+                alert ("Please enter your email id");
+                return;
+            }
 
-        var xmlhttp = new XMLHttpRequest(); 
-        xmlhttp.open("POST", " https://vanj775dy9.execute-api.eu-west-1.amazonaws.com/prod/juan-email"); 
-        xmlhttp.setRequestHeader("Content-Type", "application/json"); 
-        xmlhttp.send(JSON.stringify(data)); 
-        xmlhttp.onreadystatechange = function() { 
-        if (xmlhttp.readyState === 4) { 
-            var response = JSON.parse(xmlhttp.responseText); 
-            if (xmlhttp.status === 200 ) { 
-                console.log('successful'); 
-                document.getElementById("contact-form").innerHTML = "<h1><center>Thanks for your Email</center></h1>"; 
-            } else { 
-                console.log('failed'); 
-            } 
-         }   
-      } 
-      document.getElementById('contact-form').reset(); 
-      }
+            var reeamil = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,6})?$/;
+            if (!reeamil.test($("#email-input").val())) {
+                alert ("Please enter valid email address");
+                return;
+            }
+
+       var name = $("#name-input").val();
+       var phone = $("#phone-input").val();
+       var email = $("#email-input").val();
+       var desc = $("#description-input").val();
+       var data = {
+          name : name,
+          phone : phone,
+          email : email,
+          desc : desc
+        };
+
+       $.ajax({
+         type: "POST",
+         url : "https://vanj775dy9.execute-api.eu-west-1.amazonaws.com/prod/juan-email",
+         dataType: "json",
+         crossDomain: "true",
+         contentType: "application/json; charset=utf-8",
+         data: JSON.stringify(data),
+
+         
+         success: function () {
+           // clear form and show a success message
+           alert("Successfull");
+           document.getElementById("contact-form").reset();
+       location.reload();
+         },
+         error: function () {
+           // show an error message
+           alert("UnSuccessfull");
+         }});
+     }
 </script>
 	<title>Contact</title>
 </head>
@@ -74,31 +97,16 @@ function submitToAPI(e) {
 			</div>
 		</div>
 		<form id="contact-form" method="post">
-			<div class="row justify-content-center">
-				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3">
-					<div class="form-group">
-						<label class="form-label" for="name">Your Name</label>
-						<input type="text" class="form-control" id="name" name="name" placeholder="Your name" tabindex="1" required>
-                                </div>
-						<div class="form-group">
-							<label class="form-label" for="email">Your Email</label>
-							<input type="email" class="form-control" id="email" name="email" placeholder="Your Email" tabindex="2" required>
-                                    </div>
-							<div class="form-group">
-								<label class="form-label" for="subject">Subject</label>
-								<input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" tabindex="3">
-                                </div>
-								<div class="form-group">
-									<label class="form-label" for="message">Message</label>
-									<textarea rows="5" cols="50" name="message" class="form-control" id="message" placeholder="Message..." tabindex="4" required></textarea>
-								</div>
-								<div class="text-center">
-									<button type="submit" class="btn btn-start-order">Send Message</button>
-								</div>
-							</div>
-		
-	</div>
-    </form>
+      <h4>Name:</h4>
+      <input type="text" style="height:35px;" id="name-input" placeholder="Enter name here…" class="form-control"/><br/>
+      <h4>Phone:</h4>
+      <input type="phone" style="height:35px;" id="phone-input" placeholder="Enter phone number" class="form-control"><br/>
+      <h4>Email:</h4>
+      <input type="email" style="height:35px;" id="email-input" placeholder="Enter email here…" class="form-control"><br/>
+      <h4>How can we help you?</h4>
+      <textarea id="description-input" rows="3" placeholder="Enter your message…" class="form-control" style="width:100%;"></textarea><br/>
+      <button class="btn btn-lg" style="margin-top:20px;">Submit</button>
+</form>
 	</div>
 
 	<!-- footer -->
