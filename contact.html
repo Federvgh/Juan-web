@@ -12,10 +12,9 @@
 	<!-- style.css -->
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css" />
 <script>
-
 function submitToAPI(e) {
        e.preventDefault();
-       var URL = "https://vanj775dy9.execute-api.eu-west-1.amazonaws.com/prod/juan-email";
+       var URL = "https://slqu287xa1.execute-api.eu-west-1.amazonaws.com/first";
 
             var Namere = /[A-Za-z]{1}[A-Za-z]/;
             if (!Namere.test($("#name-input").val())) {
@@ -51,7 +50,7 @@ function submitToAPI(e) {
 
        $.ajax({
          type: "POST",
-         url : "https://vanj775dy9.execute-api.eu-west-1.amazonaws.com/prod/juan-email",
+         url : "https://slqu287xa1.execute-api.eu-west-1.amazonaws.com/first",
          dataType: "json",
          crossDomain: "true",
          contentType: "application/json; charset=utf-8",
